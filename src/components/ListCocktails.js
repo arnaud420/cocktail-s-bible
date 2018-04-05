@@ -18,10 +18,6 @@ class ListCocktails extends Component {
         title: "Cocktail's list"
     };
 
-    componentDidMount() {
-        this.props.getCocktails(this.props.name);
-    }
-
     render() {
         if (this.props.loading) {
             return (

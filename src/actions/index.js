@@ -32,21 +32,28 @@ export const setId = (cocktailId) => {
 
 export const getListCocktails = (filterType, filterParam) => {
     return (dispatch) => {
+        //let ingredients = [];
         axios.get(`${url}${filterType}${filterParam}`)
             .then( (res) => {
                 const listCategories = res.data;
                 dispatch({type: GET_LIST_FILTERED, data: listCategories})
+                /*const listCategories = res.data.drinks;
+
+                Object.keys(listCategories).forEach( (key) => {
+                    let ingredient = listCategories[key].strIngredient1;
+                    ingredients.push(ingredient)
+                });
+                console.log(ingredients)*/
             })
             .catch( (err) => console.error(err.message));
     }
 };
 
-export const getCocktails = (name) => {
+export const getCocktails = (name, category) => {
     return (dispatch) => {
-        axios.get(`${url}search.php?s=${name}`)
+        axios.get(`${url}filter.php?${category}=${name}`)
             .then( (res) => {
                 const cocktails = res.data;
-                console.log(cocktails);
                 dispatch({type: GET_COCKTAILS, data: cocktails})
             })
             .catch( (err) => console.error(err.message));

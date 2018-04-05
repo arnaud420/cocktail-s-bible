@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Button,
+    Image,
     View,
     Text,
     FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
-import { getListCocktails } from '../actions'
+import {getCocktails, getListCocktails} from '../actions'
 
 class ListCategories extends Component {
 
@@ -30,7 +31,7 @@ class ListCategories extends Component {
                     <FlatList
                         data={this.props.listCategories.drinks}
                         renderItem={({item}) => (
-                            <Text>({item.strIngredient1})</Text>
+                            this.renderIngredientsItem({item})
                         )}
                         keyExtractor={(item, index) => index}/>
                 </View>
@@ -42,12 +43,48 @@ class ListCategories extends Component {
                     <FlatList
                         data={this.props.listCategories.drinks}
                         renderItem={({item}) => (
-                            <Text>({item.strCategory})</Text>
+                            this.renderCategoriessItem({item})
                         )}
                         keyExtractor={(item, index) => index}/>
                 </View>
             )
         }
+    }
+
+    renderIngredientsItem({item}) {
+        return (
+            <View>
+                <View>
+                    <Image
+                        style={{width: 100, height: 100}}
+                        source={{uri: `https://www.thecocktaildb.com/images/ingredients/${item.strIngredient1}-Small.png`}}
+                    />
+                    <Button
+                        title={item.strIngredient1.toString()}
+                        onPress={() =>
+                        {this.props.navigation.navigate('ListCocktails');
+                        this.props.getCocktails(item.strIngredient1, 'i');
+                        }}
+                    />
+                </View>
+            </View>
+        )
+    };
+
+    renderCategoriessItem({item}) {
+        return (
+            <View>
+                <View>
+                    <Button
+                        title={item.strCategory.toString()}
+                        onPress={() =>
+                        {this.props.navigation.navigate('ListCocktails');
+                            this.props.getCocktails(item.strCategory, 'c');
+                        }}
+                    />
+                </View>
+            </View>
+        )
     }
 }
 const mapStateToProps = ({ dataReducer }) => {
@@ -59,7 +96,8 @@ const mapStateToProps = ({ dataReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getListCocktails: (filterType, filterParam) => dispatch(getListCocktails(filterType, filterParam))
+        getListCocktails: (filterType, filterParam) => dispatch(getListCocktails(filterType, filterParam)),
+        getCocktails: (name, category) => dispatch(getCocktails(name, category)),
     }
 };
 
