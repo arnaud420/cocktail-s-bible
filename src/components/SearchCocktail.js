@@ -6,9 +6,12 @@ import {
     TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
-import {changeCocktail, getCocktails} from '../actions'
+import {changeCocktail} from '../actions'
 
 class SearchCocktail extends Component {
+    static navigationOptions = {
+        title: 'Search for cocktails',
+    };
 
     render() {
 
@@ -17,13 +20,13 @@ class SearchCocktail extends Component {
 
                 <TextInput
                     style={styles.input}
-                    onChangeText={ (name) => console.log(this.props.changeCocktail(name)) }
+                    onChangeText={ (name) => this.props.changeCocktail(name) }
                     placeholder={"Enter cocktail name ..."}
                 />
 
                 <Button
                     title={"Submit"}
-                    onPress={ () => this.props.getCocktails(this.props.name) }
+                    onPress={ () => this.props.navigation.navigate('ListCocktails') }
                 />
             </View>
         )
@@ -39,7 +42,6 @@ const mapStateToProps = ({ dataReducer }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeCocktail: (name) => dispatch(changeCocktail(name)),
-        getCocktails: (name) => dispatch(getCocktails(name))
     }
 };
 

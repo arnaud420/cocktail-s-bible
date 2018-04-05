@@ -5,16 +5,21 @@ import {
     View,
     Text,
     ActivityIndicator,
-    Image
+    Image,
+    Button
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { getCocktails } from "../actions";
+import {getCocktails, setId} from "../actions";
 
 class ListCocktails extends Component {
 
+    static navigationOptions = {
+        title: "Cocktail's list"
+    };
+
     componentDidMount() {
-        this.props.getCocktails('red');
+        this.props.getCocktails(this.props.name);
     }
 
     render() {
@@ -24,17 +29,27 @@ class ListCocktails extends Component {
                     <ActivityIndicator animating={true}/>
                 </View>
             );
-        } else {
-            return (
-                <View style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-                    <FlatList
-                        data={Object.values(this.props.cocktails.drinks)}
-                        renderItem={({item}) => (
-                            this.renderItem({item})
-                        )}
-                        keyExtractor={(item, index) => index}/>
-                </View>
-            );
+        }
+        else {
+            if (this.props.cocktails.drinks != null || undefined) {
+                return (
+                    <View style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
+                        <FlatList
+                            data={this.props.cocktails.drinks}
+                            renderItem={({item}) => (
+                                this.renderItem({item})
+                            )}
+                            keyExtractor={(item, index) => index}/>
+                    </View>
+                );
+            }
+            else {
+                return (
+                    <View style={styles.activityIndicatorContainer}>
+                        <Text>There is no data for { this.props.name }</Text>
+                    </View>
+                )
+            }
         }
     }
     renderItem({item}) {
@@ -42,10 +57,16 @@ class ListCocktails extends Component {
             <View style={styles.row}>
                 <View style={styles.row}>
                     <Image
-                        style={{width: 50, height: 50}}
+                        style={{width: 100, height: 100}}
                         source={{uri: item.strDrinkThumb}}
                     />
-                    <Text style={styles.title}>{item.strDrink}</Text>
+                    <View>
+                        <Text style={styles.title}>{item.strDrink}</Text>
+                        <Button
+                            title={"See"}
+                            onPress={() => { this.props.navigation.navigate('Cocktail'); this.props.setId(item.idDrink);}}
+                        />
+                    </View>
                 </View>
             </View>
         )
@@ -54,6 +75,7 @@ class ListCocktails extends Component {
 
 const mapStateToProps = ({ dataReducer }) => {
     return {
+        name: dataReducer.name,
         loading: dataReducer.loading,
         cocktails: dataReducer.cocktails
     }
@@ -61,7 +83,8 @@ const mapStateToProps = ({ dataReducer }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCocktails: (name) => dispatch(getCocktails(name))
+        getCocktails: (name) => dispatch(getCocktails(name)),
+        setId: (cocktailId) => dispatch(setId(cocktailId))
     }
 };
 
