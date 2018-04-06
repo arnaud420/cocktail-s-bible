@@ -51,40 +51,21 @@ class ListCocktails extends Component {
     renderItem({item}) {
         return (
             <View style={styles.row}>
-                <View style={styles.row}>
-                    <Image
-                        style={{width: 100, height: 100}}
-                        source={{uri: item.strDrinkThumb}}
+                <Image
+                    style={{width: 100, height: 100}}
+                    source={{uri: item.strDrinkThumb}}
+                />
+                <View style={styles.textContainer}>
+                    <Text style={styles.title}>{item.strDrink}</Text>
+                    <Button
+                        title={"See"}
+                        onPress={() => { this.props.navigation.navigate('Cocktail'); this.props.getCocktail(item.idDrink);}}
                     />
-                    <View>
-                        <Text style={styles.title}>{item.strDrink}</Text>
-                        <Button
-                            title={"See"}
-                            onPress={() => { this.props.navigation.navigate('Cocktail'); this.props.getCocktail(item.idDrink);}}
-                        />
-                    </View>
                 </View>
             </View>
         )
     }
 }
-
-const mapStateToProps = ({ dataReducer }) => {
-    return {
-        name: dataReducer.name,
-        loading: dataReducer.loading,
-        cocktails: dataReducer.cocktails
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getCocktails: (name) => dispatch(getCocktails(name)),
-        getCocktail: (id) => dispatch(getCocktail(id))
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListCocktails);
 
 const styles = StyleSheet.create({
     activityIndicatorContainer:{
@@ -112,5 +93,30 @@ const styles = StyleSheet.create({
     description:{
         marginTop: 5,
         fontSize: 14,
+    },
+    textContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingRight: 10,
+        paddingLeft:10
     }
 });
+
+const mapStateToProps = ({ dataReducer }) => {
+    return {
+        name: dataReducer.name,
+        loading: dataReducer.loading,
+        cocktails: dataReducer.cocktails
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getCocktails: (name) => dispatch(getCocktails(name)),
+        getCocktail: (id) => dispatch(getCocktail(id))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListCocktails);
