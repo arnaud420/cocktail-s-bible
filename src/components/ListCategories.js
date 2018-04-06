@@ -37,6 +37,18 @@ class ListCategories extends Component {
                 </View>
             )
         }
+        else if (this.props.filter.filterParam === '?c=list') {
+            return (
+                <View>
+                    <FlatList
+                        data={this.props.listCategories.drinks}
+                        renderItem={({item}) => (
+                            this.renderCategoriessItem({item})
+                        )}
+                        keyExtractor={(item, index) => index}/>
+                </View>
+            )
+        }
         else {
             return (
                 <View>
@@ -59,8 +71,9 @@ class ListCategories extends Component {
                         style={{width: 100, height: 100}}
                         source={{uri: `https://www.thecocktaildb.com/images/ingredients/${item.strIngredient1}-Small.png`}}
                     />
+                    <Text>{item.strIngredient1}</Text>
                     <Button
-                        title={item.strIngredient1.toString()}
+                        title={"Go"}
                         onPress={() =>
                         {this.props.navigation.navigate('ListCocktails');
                         this.props.getCocktails(item.strIngredient1, 'i');
@@ -75,8 +88,9 @@ class ListCategories extends Component {
         return (
             <View>
                 <View>
+                    <Text>{item.strCategory}</Text>
                     <Button
-                        title={item.strCategory.toString()}
+                        title={"Go"}
                         onPress={() =>
                         {this.props.navigation.navigate('ListCocktails');
                             this.props.getCocktails(item.strCategory, 'c');

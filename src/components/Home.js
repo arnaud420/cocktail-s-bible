@@ -3,11 +3,12 @@ import {
     StyleSheet,
     Button,
     View,
-    Text
+    Text,
+    Image
 } from 'react-native';
 import store from '../store'
 import { connect } from 'react-redux';
-import { searchFilter } from '../actions'
+import { searchFilter, getRandomCocktail, getCocktail } from '../actions'
 
 class Home extends Component {
 
@@ -15,11 +16,36 @@ class Home extends Component {
         title: "Cocktail's Bible",
     };
 
+    componentDidMount() {
+        this.props.getRandomCocktail();
+    }
+
     render() {
 
         return (
             <View>
-                <Text>What do you want to drink ?</Text>
+                <View>
+                    <Image
+                        style={styles.img}
+                        source={{uri: this.props.randomCocktail.img}}
+                    />
+                    <Text style={styles.title}>{this.props.randomCocktail.title}</Text>
+                    <View style={styles.buttonsView}>
+                        <Button
+                            title={"Drink now !"}
+                            onPress={ () => {{
+                                this.props.navigation.navigate('Cocktail');
+                                this.props.getCocktail(this.props.randomCocktail.id);
+                                console.log(store.getState())
+                            } }}
+                        />
+                        <Button
+                            title={"Get an other !"}
+                            onPress={ () => this.props.getRandomCocktail()}
+                        />
+                    </View>
+                </View>
+
                 <View>
                     <Text>I want a specific ingredient !</Text>
                     <Button
@@ -41,26 +67,41 @@ class Home extends Component {
                         }}
                     />
                 </View>
-                <View>
-                    <Text>Im thursty get me a random cocktail now !</Text>
-                    <Button
-                        title={"Get"}
-                        onPress={ () => { this.props.searchFilter('random.php', ''); console.log(store.getState()) } }
-                    />
-                </View>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    title: {
+        textAlign: 'center',
+        padding: '5%',
+        fontSize: 20
+    },
+    img: {
+        width: '100%',
+        height: 350
+    },
+    buttonsView: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom: '10%'
+    },
+});
+
 const mapStateToProps = ({ dataReducer }) => {
     return {
+        randomCocktail: dataReducer.randomCocktail,
         filter: dataReducer.filter
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        searchFilter: (filterType, filterParam) => dispatch(searchFilter(filterType, filterParam))
+        searchFilter: (filterType, filterParam) => dispatch(searchFilter(filterType, filterParam)),
+        getRandomCocktail: () => dispatch(getRandomCocktail()),
+        getCocktail: (id) => dispatch(getCocktail(id))
     }
 };
 

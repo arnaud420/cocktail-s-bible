@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import {getCocktails, setId} from "../actions";
+import {getCocktails, getCocktail} from "../actions";
 
 class ListCocktails extends Component {
 
@@ -60,7 +60,7 @@ class ListCocktails extends Component {
                         <Text style={styles.title}>{item.strDrink}</Text>
                         <Button
                             title={"See"}
-                            onPress={() => { this.props.navigation.navigate('Cocktail'); this.props.setId(item.idDrink);}}
+                            onPress={() => { this.props.navigation.navigate('Cocktail'); this.props.getCocktail(item.idDrink);}}
                         />
                     </View>
                 </View>
@@ -80,7 +80,7 @@ const mapStateToProps = ({ dataReducer }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getCocktails: (name) => dispatch(getCocktails(name)),
-        setId: (cocktailId) => dispatch(setId(cocktailId))
+        getCocktail: (id) => dispatch(getCocktail(id))
     }
 };
 

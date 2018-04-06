@@ -15,10 +15,6 @@ class Cocktail extends Component {
         title: "Cocktail"
     };
 
-    componentDidMount() {
-        this.props.getCocktail(this.props.cocktailId);
-    }
-
     render() {
         return (
             <View>
@@ -26,7 +22,7 @@ class Cocktail extends Component {
                 <FlatList
                     data={this.props.cocktail.drinks}
                     renderItem={({item}) => (
-                        <Text>{item.strDrink}, {item.strGlass} {item.strInstructions}</Text>
+                        <Text>{item.strDrink}, {item.strGlass} {item.strInstructions} {item.strIngredient1}</Text>
                     )}
                     keyExtractor={(item, index) => index}
                 />
