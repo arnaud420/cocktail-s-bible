@@ -29,21 +29,9 @@ class ListCategories extends Component {
             return (
                 <View>
                     <FlatList
-                        data={this.props.listCategories.drinks}
+                        data={this.props.listCategories}
                         renderItem={({item}) => (
                             this.renderIngredientsItem({item})
-                        )}
-                        keyExtractor={(item, index) => index}/>
-                </View>
-            )
-        }
-        else if (this.props.filter.filterParam === '?c=list') {
-            return (
-                <View>
-                    <FlatList
-                        data={this.props.listCategories.drinks}
-                        renderItem={({item}) => (
-                            this.renderCategoriessItem({item})
                         )}
                         keyExtractor={(item, index) => index}/>
                 </View>
@@ -53,7 +41,7 @@ class ListCategories extends Component {
             return (
                 <View>
                     <FlatList
-                        data={this.props.listCategories.drinks}
+                        data={this.props.listCategories}
                         renderItem={({item}) => (
                             this.renderCategoriessItem({item})
                         )}
@@ -69,14 +57,14 @@ class ListCategories extends Component {
                 <View>
                     <Image
                         style={{width: 100, height: 100}}
-                        source={{uri: `https://www.thecocktaildb.com/images/ingredients/${item.strIngredient1}-Small.png`}}
+                        source={{uri: `https://www.thecocktaildb.com/images/ingredients/${item}-Small.png`}}
                     />
-                    <Text>{item.strIngredient1}</Text>
+                    <Text>{item}</Text>
                     <Button
                         title={"Go"}
                         onPress={() =>
                         {this.props.navigation.navigate('ListCocktails');
-                        this.props.getCocktails(item.strIngredient1, 'i');
+                        this.props.getCocktails(item, 'i');
                         }}
                     />
                 </View>
@@ -88,12 +76,12 @@ class ListCategories extends Component {
         return (
             <View>
                 <View>
-                    <Text>{item.strCategory}</Text>
+                    <Text>{item}</Text>
                     <Button
                         title={"Go"}
                         onPress={() =>
                         {this.props.navigation.navigate('ListCocktails');
-                            this.props.getCocktails(item.strCategory, 'c');
+                            this.props.getCocktails(item, 'c');
                         }}
                     />
                 </View>

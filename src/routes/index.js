@@ -1,5 +1,4 @@
 import {StackNavigator} from "react-navigation";
-import SearchCocktail from '../components/SearchCocktail';
 import ListCocktails from "../components/ListCocktails";
 import Cocktail from '../components/Cocktail';
 import Home from '../components/Home';
@@ -11,9 +10,6 @@ export const RootStack = StackNavigator({
     },
     ListCategories: {
         screen: ListCategories
-    },
-    Search: {
-        screen: SearchCocktail,
     },
     ListCocktails: {
         screen: ListCocktails

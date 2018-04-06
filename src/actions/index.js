@@ -21,18 +21,26 @@ export const searchFilter = (filterType, filterParam) => {
 
 export const getListCocktails = (filterType, filterParam) => {
     return (dispatch) => {
-        //let ingredients = [];
+        let ingredients = [];
+        let categories = [];
         axios.get(`${url}${filterType}${filterParam}`)
             .then( (res) => {
-                const listCategories = res.data;
-                dispatch({type: GET_LIST_FILTERED, data: listCategories})
-                /*const listCategories = res.data.drinks;
+                const listCategories = res.data.drinks;
 
-                Object.keys(listCategories).forEach( (key) => {
-                    let ingredient = listCategories[key].strIngredient1;
-                    ingredients.push(ingredient)
-                });
-                console.log(ingredients)*/
+                if (filterParam === '?i=list') {
+                    Object.keys(listCategories).forEach( (key) => {
+                        let ingredient = listCategories[key].strIngredient1;
+                        ingredients.push(ingredient)
+                    });
+                    dispatch({type: GET_LIST_FILTERED, data: ingredients.sort()})
+                }
+                else {
+                    Object.keys(listCategories).forEach( (key) => {
+                        let categorie = listCategories[key].strCategory;
+                        categories.push(categorie)
+                    });
+                    dispatch({type: GET_LIST_FILTERED, data: categories.sort()})
+                }
             })
             .catch( (err) => console.error(err.message));
     }
