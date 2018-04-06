@@ -1,28 +1,22 @@
 import { combineReducers } from 'redux';
 
-import { GET_COCKTAILS, GET_COCKTAIL, NAME_CHANGED,
-    SET_ID, SEARCH_FILTER, GET_LIST_FILTERED } from "../constants"
+import {
+    GET_COCKTAILS, GET_COCKTAIL,
+    SEARCH_FILTER, GET_LIST_FILTERED,
+    GET_RANDOM_COCKTAIL
+} from "../constants"
 
 let initialState = {
-    filter: {
-        'filterType': '',
-        'filterParam': ''
-    },
+    filter: {},
     listCategories: [],
-    name: '',
+    randomCocktail: {},
     cocktails: [],
     loading:true,
-    cocktailId: '',
     cocktail: []
 };
 
 const dataReducer = (state = initialState, action) => {
     switch (action.type) {
-        case NAME_CHANGED:
-            return {
-                ...state,
-                name: action.name
-            };
 
         case SEARCH_FILTER:
             return {
@@ -36,10 +30,10 @@ const dataReducer = (state = initialState, action) => {
                 listCategories: action.data
             };
 
-        case SET_ID:
+        case GET_RANDOM_COCKTAIL:
             return {
                 ...state,
-                cocktailId: action.cocktailId
+                randomCocktail: action.data
             };
 
         case GET_COCKTAILS:

@@ -1,15 +1,11 @@
 import axios from 'axios';
-import {GET_COCKTAILS, NAME_CHANGED, GET_COCKTAIL,
-    SET_ID, SEARCH_FILTER, GET_LIST_FILTERED } from "../constants";
+import {
+    GET_COCKTAILS, GET_COCKTAIL,
+    SEARCH_FILTER, GET_LIST_FILTERED,
+    GET_RANDOM_COCKTAIL
+} from "../constants";
 
 const url = "https://www.thecocktaildb.com/api/json/v1/1/";
-
-export const changeCocktail = (name) => {
-    return {
-        type: NAME_CHANGED,
-        name
-    }
-};
 
 export const searchFilter = (filterType, filterParam) => {
     return (dispatch) => {
@@ -20,13 +16,6 @@ export const searchFilter = (filterType, filterParam) => {
                 filterParam
             }
         })
-    }
-};
-
-export const setId = (cocktailId) => {
-    return {
-        type: SET_ID,
-        cocktailId
     }
 };
 
@@ -58,6 +47,20 @@ export const getCocktails = (name, category) => {
             })
             .catch( (err) => console.error(err.message));
     };
+};
+
+export const getRandomCocktail = () => {
+    return (dispatch) => {
+        axios.get(`${url}random.php`)
+            .then( (res) => {
+                const randomCocktail = {
+                    id: res.data.drinks[0].idDrink,
+                    title: res.data.drinks[0].strDrink,
+                    img: res.data.drinks[0].strDrinkThumb
+                };
+                dispatch({type: GET_RANDOM_COCKTAIL, data:randomCocktail})
+            } )
+    }
 };
 
 export const getCocktail = (id) => {
