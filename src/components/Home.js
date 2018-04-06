@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         padding: '5%',
-        fontSize: 20
+        fontSize: 20,
+        fontWeight: 'bold'
     },
     img: {
         width: '100%',
