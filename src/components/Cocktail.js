@@ -104,14 +104,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ dataReducer }) => {
     return {
         cocktail: dataReducer.cocktail,
-        cocktailId: dataReducer.cocktailId
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getCocktail: (id) => dispatch(getCocktail(id))
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cocktail);
+export default connect(mapStateToProps, null)(Cocktail);

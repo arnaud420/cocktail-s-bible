@@ -3,16 +3,17 @@ import { combineReducers } from 'redux';
 import {
     GET_COCKTAILS, GET_COCKTAIL,
     SEARCH_FILTER, GET_LIST_FILTERED,
-    GET_RANDOM_COCKTAIL
+    GET_RANDOM_COCKTAIL, GET_COCKTAILS_LOADING,
+    GET_COCKTAILS_ERRORS
 } from "../constants"
 
 let initialState = {
     filter: {},
     listCategories: [],
-    randomCocktail: {},
     cocktails: [],
-    loading:true,
-    cocktail: []
+    loading: false,
+    cocktail: [],
+    errors: []
 };
 
 const dataReducer = (state = initialState, action) => {
@@ -30,10 +31,10 @@ const dataReducer = (state = initialState, action) => {
                 listCategories: action.data
             };
 
-        case GET_RANDOM_COCKTAIL:
+        case GET_COCKTAILS_LOADING:
             return {
                 ...state,
-                randomCocktail: action.data
+                loading: true
             };
 
         case GET_COCKTAILS:
@@ -41,6 +42,12 @@ const dataReducer = (state = initialState, action) => {
                 ...state,
                 cocktails: action.data,
                 loading: false
+            };
+
+        case GET_COCKTAILS_ERRORS:
+            return {
+                ...state,
+                errors: action.errors
             };
 
         case GET_COCKTAIL:
@@ -54,9 +61,21 @@ const dataReducer = (state = initialState, action) => {
     }
 };
 
+const randomReducer = (state = { randomCocktail: {} }, action) => {
+    switch (action.type) {
+        case GET_RANDOM_COCKTAIL:
+            return {
+                ...state,
+                randomCocktail: action.data
+            };
+        default:
+            return state;
+    }
+};
+
 const rootReducer = combineReducers({
     dataReducer,
-    //etc
+    randomReducer
 });
 
 export default rootReducer;

@@ -5,8 +5,10 @@ import {
     Image,
     View,
     Text,
-    FlatList
+    FlatList,
+    TouchableHighlight
 } from 'react-native';
+import store from '../store'
 import { connect } from 'react-redux';
 import {getCocktails, getListCocktails} from '../actions'
 
@@ -23,16 +25,27 @@ class ListCategories extends Component {
             );
     }
 
+    getCocktailsByIngredients(item) {
+        this.props.navigation.navigate('ListCocktails');
+        this.props.getCocktails(item, 'i');
+    }
+
+    getCocktailsByCategories(item) {
+        this.props.navigation.navigate('ListCocktails');
+        this.props.getCocktails(item, 'c');
+    }
+
     render() {
 
         if (this.props.filter.filterParam === '?i=list') {
             return (
-                <View>
+                <View style={styles.container}>
                     <FlatList
                         data={this.props.listCategories}
                         renderItem={({item}) => (
                             this.renderIngredientsItem({item})
                         )}
+                        numColumns={3}
                         keyExtractor={(item, index) => index}/>
                 </View>
             )
@@ -43,8 +56,9 @@ class ListCategories extends Component {
                     <FlatList
                         data={this.props.listCategories}
                         renderItem={({item}) => (
-                            this.renderCategoriessItem({item})
+                            this.renderCategoriesItem({item})
                         )}
+                        numColumns={3}
                         keyExtractor={(item, index) => index}/>
                 </View>
             )
@@ -53,42 +67,52 @@ class ListCategories extends Component {
 
     renderIngredientsItem({item}) {
         return (
-            <View>
-                <View>
+            <View style={styles.ingredientContainer}>
+                <TouchableHighlight
+                    onPress={ () => this.getCocktailsByIngredients(item) }
+                >
                     <Image
                         style={{width: 100, height: 100}}
                         source={{uri: `https://www.thecocktaildb.com/images/ingredients/${item}-Small.png`}}
                     />
+                </TouchableHighlight>
                     <Text>{item}</Text>
-                    <Button
-                        title={"Go"}
-                        onPress={() =>
-                        {this.props.navigation.navigate('ListCocktails');
-                        this.props.getCocktails(item, 'i');
-                        }}
-                    />
-                </View>
             </View>
         )
     };
 
-    renderCategoriessItem({item}) {
+    renderCategoriesItem({item}) {
         return (
             <View>
                 <View>
                     <Text>{item}</Text>
                     <Button
                         title={"Go"}
-                        onPress={() =>
-                        {this.props.navigation.navigate('ListCocktails');
-                            this.props.getCocktails(item, 'c');
-                        }}
+                        onPress={ () => this.getCocktailsByCategories(item) }
                     />
                 </View>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'stretch'
+    },
+    ingredientContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 10
+    }
+});
+
 const mapStateToProps = ({ dataReducer }) => {
     return {
         filter: dataReducer.filter,

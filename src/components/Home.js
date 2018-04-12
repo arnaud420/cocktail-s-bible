@@ -20,6 +20,25 @@ class Home extends Component {
         this.props.getRandomCocktail();
     }
 
+    goToCocktail() {
+        this.props.navigation.navigate('Cocktail');
+        this.props.getCocktail(this.props.randomCocktail.id);
+    }
+
+    getCategoriesList() {
+        this.props.navigation.navigate('ListCategories');
+        this.props.searchFilter('list.php', '?c=list');
+    }
+
+    getIngredientsList() {
+        this.props.navigation.navigate('ListCategories');
+        this.props.searchFilter('list.php', '?i=list');
+    }
+
+    getNewRandomCocktail() {
+        this.props.getRandomCocktail()
+    }
+
     render() {
 
         return (
@@ -33,15 +52,11 @@ class Home extends Component {
                     <View style={styles.buttonsView}>
                         <Button
                             title={"Drink now !"}
-                            onPress={ () => {{
-                                this.props.navigation.navigate('Cocktail');
-                                this.props.getCocktail(this.props.randomCocktail.id);
-                                console.log(store.getState())
-                            } }}
+                            onPress={ () => this.goToCocktail() }
                         />
                         <Button
                             title={"Get an other !"}
-                            onPress={ () => this.props.getRandomCocktail()}
+                            onPress={ () => this.getNewRandomCocktail() }
                         />
                     </View>
                 </View>
@@ -50,21 +65,14 @@ class Home extends Component {
                     <Text>I want a specific ingredient !</Text>
                     <Button
                         title={"Go"}
-                        onPress={ () => {{
-                            this.props.navigation.navigate('ListCategories');
-                            this.props.searchFilter('list.php', '?i=list');
-                            console.log(store.getState())
-                        } }}
+                        onPress={ () => this.getIngredientsList() }
                     />
                 </View>
                 <View>
                     <Text>I don't know give me categories list !</Text>
                     <Button
                         title={"Go"}
-                        onPress={ () => {
-                            this.props.navigation.navigate('ListCategories');
-                            this.props.searchFilter('list.php', '?c=list');
-                        }}
+                        onPress={ () => this.getCategoriesList() }
                     />
                 </View>
             </View>
@@ -91,9 +99,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = ({ dataReducer }) => {
+const mapStateToProps = ({ dataReducer, randomReducer }) => {
     return {
-        randomCocktail: dataReducer.randomCocktail,
+        randomCocktail: randomReducer.randomCocktail,
         filter: dataReducer.filter
     }
 };

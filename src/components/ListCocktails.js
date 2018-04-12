@@ -18,6 +18,11 @@ class ListCocktails extends Component {
         title: "Cocktail's list"
     };
 
+    goToCocktails(item) {
+        this.props.navigation.navigate('Cocktail');
+        this.props.getCocktail(item);
+    }
+
     render() {
         if (this.props.loading) {
             return (
@@ -59,7 +64,7 @@ class ListCocktails extends Component {
                     <Text style={styles.title}>{item.strDrink}</Text>
                     <Button
                         title={"See"}
-                        onPress={() => { this.props.navigation.navigate('Cocktail'); this.props.getCocktail(item.idDrink);}}
+                        onPress={ () => this.goToCocktails(item.idDrink) }
                     />
                 </View>
             </View>

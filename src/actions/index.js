@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
     GET_COCKTAILS, GET_COCKTAIL,
     SEARCH_FILTER, GET_LIST_FILTERED,
-    GET_RANDOM_COCKTAIL
+    GET_RANDOM_COCKTAIL, GET_COCKTAILS_LOADING, GET_COCKTAILS_ERRORS
 } from "../constants";
 
 const url = "https://www.thecocktaildb.com/api/json/v1/1/";
@@ -23,6 +23,7 @@ export const getListCocktails = (filterType, filterParam) => {
     return (dispatch) => {
         let ingredients = [];
         let categories = [];
+
         axios.get(`${url}${filterType}${filterParam}`)
             .then( (res) => {
                 const listCategories = res.data.drinks;
@@ -39,7 +40,7 @@ export const getListCocktails = (filterType, filterParam) => {
                         let categorie = listCategories[key].strCategory;
                         categories.push(categorie)
                     });
-                    dispatch({type: GET_LIST_FILTERED, data: categories.sort()})
+                    dispatch({ type: GET_LIST_FILTERED, data: categories.sort() })
                 }
             })
             .catch( (err) => console.error(err.message));
@@ -48,12 +49,18 @@ export const getListCocktails = (filterType, filterParam) => {
 
 export const getCocktails = (name, category) => {
     return (dispatch) => {
+
+        dispatch({type: GET_COCKTAILS_LOADING});
+
         axios.get(`${url}filter.php?${category}=${name}`)
             .then( (res) => {
                 const cocktails = res.data;
-                dispatch({type: GET_COCKTAILS, data: cocktails})
+                dispatch({ type: GET_COCKTAILS, data: cocktails })
             })
-            .catch( (err) => console.error(err.message));
+            //.catch( (err) => console.error(err.message));
+            .catch( (err) => {
+                dispatch({ type: GET_COCKTAILS_ERRORS, errors: err.message })
+            })
     };
 };
 
@@ -66,7 +73,7 @@ export const getRandomCocktail = () => {
                     title: res.data.drinks[0].strDrink,
                     img: res.data.drinks[0].strDrinkThumb
                 };
-                dispatch({type: GET_RANDOM_COCKTAIL, data:randomCocktail})
+                dispatch({ type: GET_RANDOM_COCKTAIL, data:randomCocktail })
             } )
     }
 };
@@ -77,7 +84,7 @@ export const getCocktail = (id) => {
             .then( (res) => {
                 const cocktail = res.data;
                 console.log(cocktail);
-                dispatch({type: GET_COCKTAIL, data: cocktail})
+                dispatch({ type: GET_COCKTAIL, data: cocktail })
             })
             .catch( (err) => console.error(err.message));
     }
