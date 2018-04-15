@@ -4,10 +4,11 @@ import {
     FlatList,
     View,
     Text,
-    Image
+    Image,
+    Animated,
+    Easing
 } from 'react-native';
 import { connect } from 'react-redux';
-import { getCocktail } from "../actions";
 
 class Cocktail extends Component {
 
@@ -15,9 +16,23 @@ class Cocktail extends Component {
         title: "Cocktail"
     };
 
+    fadeAnimation = new Animated.Value(0);
+
+    componentDidMount() {
+        const anim = Animated.timing(this.fadeAnimation, {
+            toValue: 1,
+            easing: Easing.back(),
+            duration: 650,
+        });
+        anim.start();
+    }
+
     render() {
         return (
-            <View style={styles.container}>
+            <Animated.View style={[
+                styles.container,
+                { opacity: this.fadeAnimation }
+            ]}>
                 <FlatList
                     data={this.props.cocktail.drinks}
                     renderItem={({item}) => (
@@ -25,7 +40,7 @@ class Cocktail extends Component {
                     )}
                     keyExtractor={(item, index) => index}
                 />
-            </View>
+            </Animated.View>
         )
     }
 

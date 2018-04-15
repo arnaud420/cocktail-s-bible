@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Button,
     Image,
     View,
     Text,
     FlatList,
     TouchableHighlight
 } from 'react-native';
-import store from '../store'
 import { connect } from 'react-redux';
 import {getCocktails, getListCocktails} from '../actions'
 
@@ -58,7 +56,7 @@ class ListCategories extends Component {
                         renderItem={({item}) => (
                             this.renderCategoriesItem({item})
                         )}
-                        numColumns={3}
+                        numColumns={2}
                         keyExtractor={(item, index) => index}/>
                 </View>
             )
@@ -83,14 +81,14 @@ class ListCategories extends Component {
 
     renderCategoriesItem({item}) {
         return (
-            <View>
-                <View>
-                    <Text>{item}</Text>
-                    <Button
-                        title={"Go"}
-                        onPress={ () => this.getCocktailsByCategories(item) }
-                    />
-                </View>
+            <View style={styles.categoryContainer}>
+                <TouchableHighlight
+                    onPress={ () => this.getCocktailsByCategories(item) }
+                >
+                    <View>
+                        <Text style={styles.title}>{item}</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
         )
     }
@@ -110,6 +108,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10,
         marginBottom: 10
+    },
+    categoryContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 100,
+        margin: 5,
+        backgroundColor: '#03a9f4'
+    },
+    title: {
+        fontSize: 17,
+        color: 'white'
     }
 });
 
