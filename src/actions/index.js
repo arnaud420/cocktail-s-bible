@@ -57,7 +57,6 @@ export const getCocktails = (name, category) => {
                 const cocktails = res.data;
                 dispatch({ type: GET_COCKTAILS, data: cocktails })
             })
-            //.catch( (err) => console.error(err.message));
             .catch( (err) => {
                 dispatch({ type: GET_COCKTAILS_ERRORS, errors: err.message })
             })
@@ -83,7 +82,6 @@ export const getCocktail = (id) => {
         axios.get(`${url}lookup.php?i=${id}`)
             .then( (res) => {
                 const cocktail = res.data;
-                console.log(cocktail);
                 dispatch({ type: GET_COCKTAIL, data: cocktail })
             })
             .catch( (err) => console.error(err.message));

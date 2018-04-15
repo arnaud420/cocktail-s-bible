@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Button,
     View,
     Text,
-    Image
+    Image,
+    TouchableHighlight
 } from 'react-native';
-import store from '../store'
+import GestureRecognizer from 'react-native-swipe-gestures'
 import { connect } from 'react-redux';
 import { searchFilter, getRandomCocktail, getCocktail } from '../actions'
 
@@ -42,61 +42,53 @@ class Home extends Component {
     render() {
 
         return (
-            <View>
-                <View>
-                    <Image
-                        style={styles.img}
-                        source={{uri: this.props.randomCocktail.img}}
-                    />
-                    <Text style={styles.title}>{this.props.randomCocktail.title}</Text>
-                    <View style={styles.buttonsView}>
-                        <Button
-                            title={"Drink now !"}
-                            onPress={ () => this.goToCocktail() }
-                        />
-                        <Button
-                            title={"Get an other !"}
-                            onPress={ () => this.getNewRandomCocktail() }
-                        />
-                    </View>
-                </View>
-
-                <View>
-                    <Text>I want a specific ingredient !</Text>
-                    <Button
-                        title={"Go"}
-                        onPress={ () => this.getIngredientsList() }
-                    />
-                </View>
-                <View>
-                    <Text>I don't know give me categories list !</Text>
-                    <Button
-                        title={"Go"}
-                        onPress={ () => this.getCategoriesList() }
-                    />
-                </View>
+            <View style={styles.container}>
+                <GestureRecognizer
+                    onSwipeUp={ () => this.getIngredientsList() }
+                    onSwipeLeft={ () => this.getNewRandomCocktail() }
+                    onSwipeDown={ () => this.getCategoriesList() }
+                    >
+                    <TouchableHighlight
+                        onPress={ () => this.goToCocktail() }>
+                        <View>
+                            <Image
+                                style={styles.img}
+                                source={{uri: this.props.randomCocktail.img}}
+                            />
+                            <Text style={styles.title}>{this.props.randomCocktail.title}</Text>
+                            <Text style={styles.txtHelper}>Swipe left to get a new random cocktail</Text>
+                            <Text style={styles.txtHelper}>Swipe up to get ingredients list</Text>
+                            <Text style={styles.txtHelper}>Swipe down to get categories list</Text>
+                        </View>
+                    </TouchableHighlight>
+                </GestureRecognizer>
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        height: "100%"
+    },
     title: {
         textAlign: 'center',
         padding: '5%',
-        fontSize: 20,
-        fontWeight: 'bold'
+        fontSize: 23,
+        fontWeight: 'bold',
+        color: '#03a9f4'
     },
     img: {
         width: '100%',
-        height: 350
+        height: 400
     },
-    buttonsView: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginBottom: '10%'
-    },
+    txtHelper: {
+        color: "grey",
+        textAlign: 'center',
+        marginBottom: 5
+    }
 });
 
 const mapStateToProps = ({ dataReducer, randomReducer }) => {

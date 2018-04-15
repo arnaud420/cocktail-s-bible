@@ -63,6 +63,7 @@ class ListCocktails extends Component {
                 <View style={styles.textContainer}>
                     <Text style={styles.title}>{item.strDrink}</Text>
                     <Button
+                        color="#03a9f4"
                         title={"See"}
                         onPress={ () => this.goToCocktails(item.idDrink) }
                     />
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingRight: 10,
         paddingLeft:10
-    }
+    },
 });
 
 const mapStateToProps = ({ dataReducer }) => {

@@ -39,7 +39,7 @@ class Cocktail extends Component {
                 />
                 <Text style={styles.subtitle}>Ingredients :</Text>
 
-                <View style={styles.ingredientList}>
+                <View style={styles.bgWhite}>
                     <Text style={styles.ingredientText}>{item.strMeasure1} {item.strIngredient1}</Text>
                     {item.strIngredient2 != null && item.strIngredient2.length ? <Text style={styles.ingredientText}>{item.strMeasure2} {item.strIngredient2}</Text> : null}
                     {item.strIngredient3 != null && item.strIngredient3.length ? <Text style={styles.ingredientText}>{item.strMeasure3} {item.strIngredient3}</Text> : null}
@@ -59,9 +59,10 @@ class Cocktail extends Component {
 
                 <Text style={styles.subtitle}>Recipe :</Text>
 
-                <Text style={styles.ingredientList}>{item.strInstructions}</Text>
-
-                <Text>Serve in {item.strGlass}. </Text>
+                <View style={styles.bgWhite}>
+                    <Text>{item.strInstructions}</Text>
+                    <Text>Serve in {item.strGlass}. </Text>
+                </View>
             </View>
         )
     }
@@ -75,8 +76,8 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         padding: 10,
-        fontSize: 20,
-        borderColor: "black",
+        fontSize: 23,
+        color: '#007ac1',
         fontWeight: 'bold'
     },
     subtitle: {
@@ -84,20 +85,26 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         textDecorationLine: 'underline',
         fontSize: 17,
-        borderColor: "black",
+        color: '#03a9f4'
     },
     img: {
         height: 300,
         width: '100%'
     },
-    ingredientList: {
-        marginTop: 10,
-        marginBottom: 10,
-    },
     ingredientText: {
         fontWeight: 'bold',
         marginTop: 3,
         marginBottom: 3
+    },
+    bgWhite: {
+        backgroundColor: 'white',
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: .5,
+        shadowRadius: .5,
+        borderRadius: .5
     }
 });
 
